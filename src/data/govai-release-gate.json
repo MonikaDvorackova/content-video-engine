@@ -1,0 +1,28 @@
+{
+    "hookLines": [
+      "Compliance Evidence Dashboard",
+      "Generate runs, verify integrity, and ship auditable evidence bundles."
+    ],
+    "mobilePrompt": "GovAI, generate a compliance evidence bundle for release v1.8.",
+    "checks": [
+      "Open runs",
+      "Sign in",
+      "Integrity",
+      "Artifacts"
+    ],
+    "decision": {
+      "status": "approved",
+      "title": "Evidence bundle ready",
+      "reason": "Mode, status, hashes, and audit artifacts are ready to ship."
+    },
+    "evidenceItems": [
+      "Recent runs available",
+      "Protected access enabled",
+      "Hashes and timestamps verified",
+      "Evidence pack exported"
+    ],
+    "outro": {
+      "headline": "Minimal surface. Strong guarantees.",
+      "subheadline": "Everything is hashed. Everything is traceable."
+    }
+  }

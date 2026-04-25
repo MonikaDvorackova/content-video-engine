@@ -1,0 +1,50 @@
+{
+  "run_id": "demo-run-id",
+  "base_url": "http://127.0.0.1:8088",
+  "timestamp": "2026-04-23T00:00:00.000Z",
+  "events": [
+    {
+      "name": "data_registered",
+      "payload": {
+        "dataset_id": "transactions-risk-dataset",
+        "dataset_version": "2026.04",
+        "dataset_fingerprint": "9f4b2e7c8a1d6f0b3c5e9a7d2f1c8b6a4e3d9c0b7a6f5e4d3c2b1a0f9e8d7c6b",
+        "ai_system_id": "govai-risk-classifier"
+      }
+    },
+    {
+      "name": "model_trained",
+      "payload": {
+        "model_version": "risk-classifier-v1.4.0",
+        "framework": "xgboost",
+        "training_rows": 184230,
+        "features": 42
+      }
+    },
+    {
+      "name": "evaluation_reported",
+      "payload": {
+        "precision": 0.94,
+        "recall": 0.91,
+        "false_positive_rate": 0.03
+      }
+    },
+    {
+      "name": "human_approved",
+      "payload": {
+        "approver_id": "risk-owner-001",
+        "assessment_id": "assessment-2026-04-govai-risk"
+      }
+    },
+    {
+      "name": "model_promoted",
+      "payload": {
+        "artifact_ref": "registry.govai.local/risk-classifier:v1.4.0"
+      }
+    }
+  ],
+  "compliance_decision": {
+    "state": "VALID"
+  },
+  "chain_valid": true
+}

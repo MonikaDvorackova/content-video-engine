@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/* Typography-first, enterprise-infra defaults */
+:root {
+  color-scheme: dark;
+
+  --govai-bg: #0b0e13;
+  --govai-surface-0: rgba(17, 21, 27, 0.72);
+  --govai-surface-1: rgba(22, 27, 34, 0.72);
+  --govai-border: rgba(139, 149, 163, 0.28);
+  --govai-border-subtle: rgba(139, 149, 163, 0.14);
+
+  --govai-text: #f6f5f2;
+  --govai-text-2: rgba(185, 194, 204, 0.92);
+  --govai-text-3: rgba(139, 149, 163, 0.92);
+
+  --govai-success: #86b092;
+  --govai-warning: #c49a62;
+  --govai-danger: #d17a7a;
+
+  --govai-radius: 14px;
+  --govai-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+html,
+body {
+  background: var(--govai-bg);
+  color: var(--govai-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Small utility for crisp diagram strokes */
+.govai-stroke {
+  shape-rendering: geometricPrecision;
+}
+

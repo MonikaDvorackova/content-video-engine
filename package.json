@@ -2,22 +2,43 @@
   "name": "content-video-engine",
   "version": "1.0.0",
   "private": true,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
+    "dev": "remotion studio src/index.ts",
     "remotion": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts govai-hero-30s out/govai-hero.mp4",
+    "browser:ensure": "remotion browser ensure",
+    "typecheck": "tsc --noEmit",
+    "render:cinematic": "remotion render src/govai-cinematic-entry.tsx GovAICinematic exports/video/govai-cinematic.mp4 --timeout=300000 --concurrency=1 --log=warn",
+    "render:cinematic:landing": "remotion render src/govai-cinematic-entry.tsx GovAICinematic-Landing exports/video/govai-cinematic-landing.mp4 --timeout=300000 --concurrency=1 --log=warn",
+    "render:cinematic:hook": "remotion render src/govai-cinematic-entry.tsx GovAICinematic-Hook exports/video/govai-cinematic-hook.mp4 --timeout=300000 --concurrency=1 --log=warn",
+    "voiceover:cinematic": "node generate-govai-cinematic-voiceover.js",
+    "render:deck": "remotion render src/index.ts GovAIInvestorDeck exports/video/govai-investor-deck.mp4 --timeout=300000 --concurrency=1 --browser-executable=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --log=warn",
+    "render:deck:speaker": "remotion render src/index.ts GovAIInvestorDeck-Speaker exports/video/govai-investor-deck-speaker.mp4 --timeout=300000 --concurrency=1 --browser-executable=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --log=warn",
+    "stills:deck": "node scripts/export-deck-stills.mjs",
+    "pdf:deck": "node scripts/assemble-deck-pdf.mjs",
+    "pptx:deck": "node scripts/assemble-deck-pptx.mjs",
     "compositions": "remotion compositions src/index.ts"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.441",
+    "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
+    "framer-motion": "^12.38.0",
     "openai": "^6.33.0",
+    "pdf-lib": "^1.17.1",
+    "pptxgenjs": "^3.12.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "remotion": "^4.0.441"
   },
   "devDependencies": {
+    "@remotion/tailwind-v4": "^4.0.441",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "tailwindcss": "^4.2.4",
     "typescript": "^5.9.2"
   }
 }

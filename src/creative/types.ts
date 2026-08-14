@@ -142,7 +142,7 @@ export interface CreativeStrategy {
   scenes: SceneBeat[];
 }
 
-export interface RenderBrief {
+export interface RenderBrief extends Record<string, unknown> {
   version: '1.0';
 
   story: StorySignal;

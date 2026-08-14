@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "remotion": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts govai-hero-30s out/govai-hero.mp4",
+    "render": "remotion render src/index.ts aigov-hero-30s out/aigov-hero.mp4",
     "compositions": "remotion compositions src/index.ts"
   },
   "dependencies": {

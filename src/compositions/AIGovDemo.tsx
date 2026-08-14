@@ -8,7 +8,7 @@ import {
   useCurrentFrame,
 } from 'remotion';
 
-export const GOVAI_TOKENS = {
+export const AIGOV_TOKENS = {
   bg: '#0B0E13',
   surfaceChrome: '#11151B',
   surfaceMid: '#161B22',
@@ -27,16 +27,16 @@ export const GOVAI_TOKENS = {
     'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
 } as const;
 
-export const GOVAI_DEMO_FPS = 30;
-export const GOVAI_DEMO_DURATION_IN_FRAMES = 90 * GOVAI_DEMO_FPS;
-export const govAIDemoFps = GOVAI_DEMO_FPS;
+export const AIGOV_DEMO_FPS = 30;
+export const AIGOV_DEMO_DURATION_IN_FRAMES = 90 * AIGOV_DEMO_FPS;
+export const aigovDemoFps = AIGOV_DEMO_FPS;
 
-const GOVAI_DEMO_AUDIO_BED_PATH = 'audio/govai-demo-bed.mp3';
-const GOVAI_DEMO_AUDIO_VOICEOVER_PATH = 'audio/govai-demo-voiceover.mp3';
+const AIGOV_DEMO_AUDIO_BED_PATH = 'audio/aigov-demo-bed.mp3';
+const AIGOV_DEMO_AUDIO_VOICEOVER_PATH = 'audio/aigov-demo-voiceover.mp3';
 const ENABLE_BED_AUDIO = false;
 const ENABLE_VOICEOVER = true;
 
-const sec = (s: number) => Math.round(s * GOVAI_DEMO_FPS);
+const sec = (s: number) => Math.round(s * AIGOV_DEMO_FPS);
 const T = {
   opening: {start: sec(0), end: sec(8)},
   problem: {start: sec(8), end: sec(16)},
@@ -54,7 +54,7 @@ type EventType =
   | 'model_promoted'
   | string;
 
-export type GovAIDemoEvent = {
+export type AIGovDemoEvent = {
   // Some fixtures use `name`; normalize to `type` at runtime.
   type?: EventType;
   name?: string;
@@ -65,13 +65,13 @@ export type GovAIDemoEvent = {
   payload?: Record<string, unknown>;
 };
 
-export type GovAIDemoProps = {
+export type AIGovDemoProps = {
   run_id: string;
   timestamp: string;
   base_url: string;
   chain_valid: boolean;
   compliance_decision: {state: string; reasons?: string[]};
-  events: GovAIDemoEvent[];
+  events: AIGovDemoEvent[];
 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -96,18 +96,18 @@ const shortHash = (v: unknown, len = 14) => {
 
 const formatIsoLike = (iso?: string) => (iso ? iso.replace('T', ' ').replace('Z', ' UTC') : '—');
 
-const getEventType = (e: GovAIDemoEvent): EventType => (e.type ?? e.name ?? 'unknown') as EventType;
+const getEventType = (e: AIGovDemoEvent): EventType => (e.type ?? e.name ?? 'unknown') as EventType;
 
-const normalizeEvent = (e: GovAIDemoEvent): Required<Pick<GovAIDemoEvent, 'type' | 'payload'>> & GovAIDemoEvent => ({
+const normalizeEvent = (e: AIGovDemoEvent): Required<Pick<AIGovDemoEvent, 'type' | 'payload'>> & AIGovDemoEvent => ({
   ...e,
   type: getEventType(e),
   payload: e.payload ?? {},
 });
 
-const getEvent = (events: GovAIDemoEvent[], type: EventType): GovAIDemoEvent =>
+const getEvent = (events: AIGovDemoEvent[], type: EventType): AIGovDemoEvent =>
   events.find((e) => getEventType(e) === type) ?? {type, payload: {}};
 
-const getFingerprint = (events: GovAIDemoEvent[]) =>
+const getFingerprint = (events: AIGovDemoEvent[]) =>
   events.find((e) => e.fingerprint)?.fingerprint ??
   events.find((e) => e.hash)?.hash ??
   '—';
@@ -115,10 +115,10 @@ const getFingerprint = (events: GovAIDemoEvent[]) =>
 const Card: React.FC<{children: React.ReactNode; style?: React.CSSProperties}> = ({children, style}) => (
   <div
     style={{
-      background: GOVAI_TOKENS.surfaceMid,
-      border: `1px solid ${GOVAI_TOKENS.border}`,
-      borderRadius: GOVAI_TOKENS.radiusCard,
-      boxShadow: GOVAI_TOKENS.shadow,
+      background: AIGOV_TOKENS.surfaceMid,
+      border: `1px solid ${AIGOV_TOKENS.border}`,
+      borderRadius: AIGOV_TOKENS.radiusCard,
+      boxShadow: AIGOV_TOKENS.shadow,
       padding: 18,
       ...style,
     }}
@@ -128,7 +128,7 @@ const Card: React.FC<{children: React.ReactNode; style?: React.CSSProperties}> =
 );
 
 const Mono: React.FC<{children: React.ReactNode; style?: React.CSSProperties}> = ({children, style}) => (
-  <span style={{fontFamily: GOVAI_TOKENS.fontMono, letterSpacing: 0.2, ...style}}>{children}</span>
+  <span style={{fontFamily: AIGOV_TOKENS.fontMono, letterSpacing: 0.2, ...style}}>{children}</span>
 );
 
 const Chip: React.FC<{label: string; tone: 'muted' | 'success' | 'warning'}> = ({label, tone}) => {
@@ -143,9 +143,9 @@ const Chip: React.FC<{label: string; tone: 'muted' | 'success' | 'warning'}> = (
       ? 'rgba(134, 176, 146, 0.35)'
       : tone === 'warning'
         ? 'rgba(196, 154, 98, 0.35)'
-        : GOVAI_TOKENS.border;
+        : AIGOV_TOKENS.border;
   const color =
-    tone === 'success' ? GOVAI_TOKENS.success : tone === 'warning' ? GOVAI_TOKENS.warning : GOVAI_TOKENS.textSecondary;
+    tone === 'success' ? AIGOV_TOKENS.success : tone === 'warning' ? AIGOV_TOKENS.warning : AIGOV_TOKENS.textSecondary;
   return (
     <span style={{display: 'inline-flex', padding: '6px 10px', borderRadius: 999, border: `1px solid ${border}`, background: bg, color, fontSize: 12}}>
       {label}
@@ -169,7 +169,7 @@ const Subtitle: React.FC<{frame: number}> = ({frame}) => {
   const opacity = a * (1 - z);
   return (
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 26, display: 'flex', justifyContent: 'center', opacity}}>
-      <div style={{maxWidth: 1180, padding: '10px 14px', borderRadius: 10, border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, background: 'rgba(10, 12, 16, 0.55)', color: GOVAI_TOKENS.textSecondary, fontSize: 14, backdropFilter: 'blur(8px)'}}>
+      <div style={{maxWidth: 1180, padding: '10px 14px', borderRadius: 10, border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, background: 'rgba(10, 12, 16, 0.55)', color: AIGOV_TOKENS.textSecondary, fontSize: 14, backdropFilter: 'blur(8px)'}}>
         {b.text}
       </div>
     </div>
@@ -185,10 +185,10 @@ const Opening: React.FC<{frame: number; runId: string}> = ({frame, runId}) => {
   return (
     <div style={{position: 'absolute', inset: 0, opacity, transform: `translateY(${y}px)`}}>
       <div style={{position: 'absolute', left: 96, top: 188, width: 900}}>
-        <div style={{fontWeight: 800, fontSize: 56, letterSpacing: 0.4, color: GOVAI_TOKENS.textPrimary}}>GovAI Audit Processor</div>
-        <div style={{marginTop: 18, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textSecondary, fontSize: 16}}>
-          {'>'} create_run(<span style={{color: GOVAI_TOKENS.textMuted}}>run_id=</span>
-          <span style={{color: GOVAI_TOKENS.textPrimary}}>{shown}</span>)
+        <div style={{fontWeight: 800, fontSize: 56, letterSpacing: 0.4, color: AIGOV_TOKENS.textPrimary}}>AIGov Audit Processor</div>
+        <div style={{marginTop: 18, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textSecondary, fontSize: 16}}>
+          {'>'} create_run(<span style={{color: AIGOV_TOKENS.textMuted}}>run_id=</span>
+          <span style={{color: AIGOV_TOKENS.textPrimary}}>{shown}</span>)
         </div>
       </div>
     </div>
@@ -201,15 +201,15 @@ const Problem: React.FC<{frame: number}> = ({frame}) => {
   return (
     <div style={{position: 'absolute', inset: 0, opacity}}>
       <div style={{position: 'absolute', left: 96, top: 160}}>
-        <div style={{fontWeight: 750, color: GOVAI_TOKENS.textPrimary, fontSize: 28}}>Proving compliance requires structured evidence.</div>
+        <div style={{fontWeight: 750, color: AIGOV_TOKENS.textPrimary, fontSize: 28}}>Proving compliance requires structured evidence.</div>
       </div>
       <div style={{position: 'absolute', left: 96, top: 210, width: 920}}>
         {qs.map((q, i) => {
           const p = prog(frame, T.problem.start + sec(0.8) + i * sec(1.3), T.problem.start + sec(1.5) + i * sec(1.3), easeOut);
           return (
             <div key={q} style={{display: 'flex', gap: 12, alignItems: 'center', marginTop: i ? 14 : 0, opacity: p, transform: `translateY(${interpolate(p, [0, 1], [10, 0])}px)`}}>
-              <div style={{width: 10, height: 10, borderRadius: 99, background: `rgba(185,194,204,${0.22 + 0.25 * p})`, border: `1px solid ${GOVAI_TOKENS.border}`}} />
-              <div style={{color: GOVAI_TOKENS.textSecondary, fontSize: 18}}>{q}</div>
+              <div style={{width: 10, height: 10, borderRadius: 99, background: `rgba(185,194,204,${0.22 + 0.25 * p})`, border: `1px solid ${AIGOV_TOKENS.border}`}} />
+              <div style={{color: AIGOV_TOKENS.textSecondary, fontSize: 18}}>{q}</div>
             </div>
           );
         })}
@@ -229,8 +229,8 @@ const AuditChain: React.FC<{frame: number; start: number; committed: number; com
   const linePx = (Math.max(0, Math.min(LABELS.length - 1, full - 1)) / (LABELS.length - 1)) * lineLen;
   const scan = 0.12 + 0.08 * Math.sin((frame - start) / 18);
   return (
-    <Card style={{height: '100%', background: GOVAI_TOKENS.surfaceChrome, opacity}}>
-      <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Audit chain</div>
+    <Card style={{height: '100%', background: AIGOV_TOKENS.surfaceChrome, opacity}}>
+      <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Audit chain</div>
       <div style={{position: 'relative', marginTop: 18, height: 520}}>
         <div style={{position: 'absolute', left: 40, top: topY, width: 2, height: lineLen, background: 'rgba(139,149,163,0.22)'}} />
         <div style={{position: 'absolute', left: 40, top: topY, width: 2, height: linePx, background: 'rgba(134,176,146,0.65)', boxShadow: `0 0 18px rgba(134,176,146,${0.16 + scan})`}} />
@@ -244,8 +244,8 @@ const AuditChain: React.FC<{frame: number; start: number; committed: number; com
             <div key={l} style={{position: 'absolute', left: 0, top: topY + i * gapY, opacity: ap}}>
               <div style={{position: 'absolute', left: 30, top: -10, width: 20, height: 20, borderRadius: 99, background: fill, border: `1px solid ${ring}`}} />
               <div style={{marginLeft: 78}}>
-                <div style={{color: GOVAI_TOKENS.textSecondary, fontSize: 13}}>{l}</div>
-                <div style={{marginTop: 2, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 11}}>
+                <div style={{color: AIGOV_TOKENS.textSecondary, fontSize: 13}}>{l}</div>
+                <div style={{marginTop: 2, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 11}}>
                   {recorded ? 'RECORDED' : active ? 'COMMITTING…' : 'PENDING'}
                 </div>
               </div>
@@ -267,8 +267,8 @@ const RunState: React.FC<{frame: number; start: number; idx: number; commitProgr
     'PROMOTION complete',
   ];
   return (
-    <Card style={{height: '100%', background: GOVAI_TOKENS.surfaceChrome, opacity}}>
-      <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Run state</div>
+    <Card style={{height: '100%', background: AIGOV_TOKENS.surfaceChrome, opacity}}>
+      <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Run state</div>
       <div style={{marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10}}>
         {rows.map((r, i) => {
           const ap = prog(frame, start + i * sec(0.35), start + i * sec(0.35) + sec(0.5), easeOut);
@@ -278,9 +278,9 @@ const RunState: React.FC<{frame: number; start: number; idx: number; commitProgr
           const label = recorded ? 'ok' : active ? 'processing' : 'pending';
           const bar = recorded ? 1 : active ? clamp01(commitProgress) : 0;
           return (
-            <div key={r} style={{opacity: ap, border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, borderRadius: 10, padding: 12, background: 'rgba(22,27,34,0.55)'}}>
+            <div key={r} style={{opacity: ap, border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, borderRadius: 10, padding: 12, background: 'rgba(22,27,34,0.55)'}}>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <div style={{color: GOVAI_TOKENS.textSecondary, fontSize: 13}}>{r}</div>
+                <div style={{color: AIGOV_TOKENS.textSecondary, fontSize: 13}}>{r}</div>
                 <Chip label={label} tone={tone} />
               </div>
               <div style={{marginTop: 10, height: 4, borderRadius: 99, background: 'rgba(139,149,163,0.16)', overflow: 'hidden'}}>
@@ -311,7 +311,7 @@ const PAYLOAD_FIELDS = [
   'environment',
 ];
 
-const EvidencePacket: React.FC<{frame: number; start: number; idx: number; event: GovAIDemoEvent; phase: 'ingest' | 'expand' | 'commit'; phaseP: number}> = ({
+const EvidencePacket: React.FC<{frame: number; start: number; idx: number; event: AIGovDemoEvent; phase: 'ingest' | 'expand' | 'commit'; phaseP: number}> = ({
   frame,
   start,
   idx,
@@ -342,30 +342,30 @@ const EvidencePacket: React.FC<{frame: number; start: number; idx: number; event
   return (
     <Card style={{height: '100%', opacity, transform: `translateY(${y}px) scale(${scale})`}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Evidence packet • {LABELS[idx]}</div>
+        <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Evidence packet • {LABELS[idx]}</div>
         <Chip label={phase === 'commit' ? 'committing' : phase === 'expand' ? 'decoding' : 'ingesting'} tone={phase === 'commit' ? 'warning' : 'muted'} />
       </div>
-      <div style={{marginTop: 10, display: 'flex', justifyContent: 'space-between', gap: 16, color: GOVAI_TOKENS.textMuted, fontSize: 12}}>
+      <div style={{marginTop: 10, display: 'flex', justifyContent: 'space-between', gap: 16, color: AIGOV_TOKENS.textMuted, fontSize: 12}}>
         <div>
-          actor: <Mono style={{color: GOVAI_TOKENS.textSecondary}}>{event.actor ?? '—'}</Mono>
+          actor: <Mono style={{color: AIGOV_TOKENS.textSecondary}}>{event.actor ?? '—'}</Mono>
         </div>
         <div>
-          ts: <Mono style={{color: GOVAI_TOKENS.textSecondary}}>{formatIsoLike(event.timestamp)}</Mono>
+          ts: <Mono style={{color: AIGOV_TOKENS.textSecondary}}>{formatIsoLike(event.timestamp)}</Mono>
         </div>
       </div>
-      <div style={{marginTop: 10, color: GOVAI_TOKENS.textMuted, fontSize: 12}}>
-        fingerprint: <Mono style={{color: GOVAI_TOKENS.textSecondary, opacity: hashOpacity}}>{hash}</Mono>
+      <div style={{marginTop: 10, color: AIGOV_TOKENS.textMuted, fontSize: 12}}>
+        fingerprint: <Mono style={{color: AIGOV_TOKENS.textSecondary, opacity: hashOpacity}}>{hash}</Mono>
       </div>
-      <div style={{marginTop: 16, borderTop: `1px solid ${GOVAI_TOKENS.borderSubtle}`, paddingTop: 14}}>
-        <div style={{color: GOVAI_TOKENS.textSecondary, fontSize: 12}}>payload fields</div>
+      <div style={{marginTop: 16, borderTop: `1px solid ${AIGOV_TOKENS.borderSubtle}`, paddingTop: 14}}>
+        <div style={{color: AIGOV_TOKENS.textSecondary, fontSize: 12}}>payload fields</div>
         <div style={{marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12}}>
           {ordered.slice(0, revealCount).map((k, i) => {
             const s = i * 0.085;
             const p = phase === 'expand' ? clamp01((phaseP - s) / (1 - s)) : 1;
             return (
-              <div key={k} style={{opacity: p, transform: `translateY(${interpolate(p, [0, 1], [6, 0])}px)`, border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, borderRadius: 10, padding: '10px 10px', background: 'rgba(17,21,27,0.6)'}}>
-                <div style={{fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 11}}>{k}</div>
-                <div style={{marginTop: 6, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textSecondary, fontSize: 12}}>
+              <div key={k} style={{opacity: p, transform: `translateY(${interpolate(p, [0, 1], [6, 0])}px)`, border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, borderRadius: 10, padding: '10px 10px', background: 'rgba(17,21,27,0.6)'}}>
+                <div style={{fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 11}}>{k}</div>
+                <div style={{marginTop: 6, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textSecondary, fontSize: 12}}>
                   {typeof (raw as Record<string, unknown>)[k] === 'string' ? ((raw as Record<string, unknown>)[k] as string) : JSON.stringify((raw as Record<string, unknown>)[k] ?? '—')}
                 </div>
               </div>
@@ -377,7 +377,7 @@ const EvidencePacket: React.FC<{frame: number; start: number; idx: number; event
   );
 };
 
-const Lifecycle: React.FC<{frame: number; eventsStrict: GovAIDemoEvent[]}> = ({frame, eventsStrict}) => {
+const Lifecycle: React.FC<{frame: number; eventsStrict: AIGovDemoEvent[]}> = ({frame, eventsStrict}) => {
   const start = T.lifecycle.start;
   const end = T.lifecycle.end;
   const opacity = prog(frame, start, start + sec(0.8), easeInOut) * (1 - prog(frame, end - sec(0.8), end, easeInOut));
@@ -426,12 +426,12 @@ const Compliance: React.FC<{frame: number; state: string}> = ({frame, state}) =>
     <div style={{position: 'absolute', left: 0, right: 0, top: 110, bottom: 86, opacity}}>
       <div style={{position: 'absolute', left: 28, right: 28, top: 0, bottom: 0, display: 'flex', gap: 18}}>
         <div style={{width: 420}}>
-          <Card style={{height: '100%', background: GOVAI_TOKENS.surfaceChrome}}>
-            <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Derivation</div>
+          <Card style={{height: '100%', background: AIGOV_TOKENS.surfaceChrome}}>
+            <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Derivation</div>
             <div style={{marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10}}>
               {checks.map((c, i) => (
-                <div key={c} style={{display: 'flex', justifyContent: 'space-between', border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, borderRadius: 10, padding: 12, background: 'rgba(22,27,34,0.55)'}}>
-                  <div style={{color: GOVAI_TOKENS.textSecondary, fontSize: 13}}>{c}</div>
+                <div key={c} style={{display: 'flex', justifyContent: 'space-between', border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, borderRadius: 10, padding: 12, background: 'rgba(22,27,34,0.55)'}}>
+                  <div style={{color: AIGOV_TOKENS.textSecondary, fontSize: 13}}>{c}</div>
                   <Chip label={i < done ? 'pass' : 'pending'} tone={i < done ? 'success' : 'muted'} />
                 </div>
               ))}
@@ -440,10 +440,10 @@ const Compliance: React.FC<{frame: number; state: string}> = ({frame, state}) =>
         </div>
         <div style={{flex: 1}}>
           <Card style={{height: '100%'}}>
-            <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Derived compliance output</div>
-            <div style={{marginTop: 26, border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, borderRadius: 12, padding: 16, background: 'rgba(17,21,27,0.6)'}}>
-              <div style={{fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 11}}>STATE</div>
-              <div style={{marginTop: 10, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.success, fontSize: 34, opacity: validP, transform: `translateY(${interpolate(validP, [0, 1], [10, 0])}px)`}}>
+            <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Derived compliance output</div>
+            <div style={{marginTop: 26, border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, borderRadius: 12, padding: 16, background: 'rgba(17,21,27,0.6)'}}>
+              <div style={{fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 11}}>STATE</div>
+              <div style={{marginTop: 10, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.success, fontSize: 34, opacity: validP, transform: `translateY(${interpolate(validP, [0, 1], [10, 0])}px)`}}>
                 {state || 'VALID'}
               </div>
             </div>
@@ -464,13 +464,13 @@ const Verify: React.FC<{frame: number; chainValid: boolean; fingerprint: string}
       <div style={{position: 'absolute', left: 28, right: 28, top: 0, bottom: 0, display: 'flex', gap: 18}}>
         <div style={{flex: 1}}>
           <Card style={{height: '100%'}}>
-            <div style={{fontWeight: 700, color: GOVAI_TOKENS.textPrimary, fontSize: 14}}>Hash chain verification</div>
-            <div style={{marginTop: 20, border: `1px solid ${GOVAI_TOKENS.borderSubtle}`, borderRadius: 12, padding: 14, background: 'rgba(17,21,27,0.6)'}}>
-              <div style={{fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 11}}>CHAIN_VALID</div>
-              <div style={{marginTop: 10, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.success, fontSize: 22, opacity: chainP}}>
+            <div style={{fontWeight: 700, color: AIGOV_TOKENS.textPrimary, fontSize: 14}}>Hash chain verification</div>
+            <div style={{marginTop: 20, border: `1px solid ${AIGOV_TOKENS.borderSubtle}`, borderRadius: 12, padding: 14, background: 'rgba(17,21,27,0.6)'}}>
+              <div style={{fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 11}}>CHAIN_VALID</div>
+              <div style={{marginTop: 10, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.success, fontSize: 22, opacity: chainP}}>
                 {chainValid ? 'true' : 'false'}
               </div>
-              <div style={{marginTop: 10, fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 11}}>FINGERPRINT: {shortHash(fingerprint, 20)}</div>
+              <div style={{marginTop: 10, fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 11}}>FINGERPRINT: {shortHash(fingerprint, 20)}</div>
             </div>
           </Card>
         </div>
@@ -484,8 +484,8 @@ const Final: React.FC<{frame: number}> = ({frame}) => {
   return (
     <div style={{position: 'absolute', inset: 0, opacity, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
       <div style={{width: 980}}>
-        <Card style={{padding: 28, background: GOVAI_TOKENS.surfaceChrome}}>
-          <div style={{fontWeight: 850, color: GOVAI_TOKENS.textPrimary, fontSize: 34}}>Audit-ready AI governance</div>
+        <Card style={{padding: 28, background: AIGOV_TOKENS.surfaceChrome}}>
+          <div style={{fontWeight: 850, color: AIGOV_TOKENS.textPrimary, fontSize: 34}}>Audit-ready AI governance</div>
           <div style={{marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap'}}>
             <Chip label="EVIDENCE: complete" tone="success" />
             <Chip label="STATE: VALID" tone="success" />
@@ -497,11 +497,11 @@ const Final: React.FC<{frame: number}> = ({frame}) => {
   );
 };
 
-export const GovAIDemo: React.FC<GovAIDemoProps> = (props) => {
+export const AIGovDemo: React.FC<AIGovDemoProps> = (props) => {
   const frame = useCurrentFrame();
   const eventsNormalized = props.events.map(normalizeEvent);
   const fingerprint = getFingerprint(eventsNormalized);
-  const eventsStrict: GovAIDemoEvent[] = [
+  const eventsStrict: AIGovDemoEvent[] = [
     getEvent(eventsNormalized, 'data_registered'),
     getEvent(eventsNormalized, 'model_trained'),
     getEvent(eventsNormalized, 'evaluation_reported'),
@@ -509,24 +509,24 @@ export const GovAIDemo: React.FC<GovAIDemoProps> = (props) => {
     getEvent(eventsNormalized, 'model_promoted'),
   ];
 
-  const bedVolume = 0.28 * prog(frame, 0, sec(1.2), easeInOut) * (1 - prog(frame, GOVAI_DEMO_DURATION_IN_FRAMES - sec(1.4), GOVAI_DEMO_DURATION_IN_FRAMES, easeInOut));
+  const bedVolume = 0.28 * prog(frame, 0, sec(1.2), easeInOut) * (1 - prog(frame, AIGOV_DEMO_DURATION_IN_FRAMES - sec(1.4), AIGOV_DEMO_DURATION_IN_FRAMES, easeInOut));
   const voiceoverVolume = 0.92;
 
   const topbarOpacity = prog(frame, sec(2.0), sec(3.0), easeInOut);
 
   return (
-    <AbsoluteFill style={{background: GOVAI_TOKENS.bg, color: GOVAI_TOKENS.textPrimary, fontFamily: GOVAI_TOKENS.fontUi}}>
-      {ENABLE_BED_AUDIO ? <Audio src={staticFile(GOVAI_DEMO_AUDIO_BED_PATH)} volume={bedVolume} /> : null}
-      {ENABLE_VOICEOVER ? <Audio src={staticFile(GOVAI_DEMO_AUDIO_VOICEOVER_PATH)} volume={voiceoverVolume} /> : null}
+    <AbsoluteFill style={{background: AIGOV_TOKENS.bg, color: AIGOV_TOKENS.textPrimary, fontFamily: AIGOV_TOKENS.fontUi}}>
+      {ENABLE_BED_AUDIO ? <Audio src={staticFile(AIGOV_DEMO_AUDIO_BED_PATH)} volume={bedVolume} /> : null}
+      {ENABLE_VOICEOVER ? <Audio src={staticFile(AIGOV_DEMO_AUDIO_VOICEOVER_PATH)} volume={voiceoverVolume} /> : null}
 
       <AbsoluteFill style={{background: 'radial-gradient(1200px 700px at 70% 20%, rgba(134,176,146,0.06), rgba(11,14,19,0) 55%), radial-gradient(900px 520px at 12% 10%, rgba(139,149,163,0.06), rgba(11,14,19,0) 60%)'}} />
 
       <div style={{position: 'absolute', top: 24, left: 28, right: 28, display: 'flex', justifyContent: 'space-between', opacity: topbarOpacity}}>
         <div style={{display: 'flex', gap: 14, alignItems: 'baseline'}}>
-          <div style={{fontWeight: 700, letterSpacing: 0.4}}>GovAI</div>
+          <div style={{fontWeight: 700, letterSpacing: 0.4}}>AIGov</div>
           <Chip label={`run_id: ${props.run_id}`} tone="muted" />
         </div>
-        <div style={{fontFamily: GOVAI_TOKENS.fontMono, color: GOVAI_TOKENS.textMuted, fontSize: 12}}>{formatIsoLike(props.timestamp)}</div>
+        <div style={{fontFamily: AIGOV_TOKENS.fontMono, color: AIGOV_TOKENS.textMuted, fontSize: 12}}>{formatIsoLike(props.timestamp)}</div>
       </div>
 
       <Opening frame={frame} runId={props.run_id} />

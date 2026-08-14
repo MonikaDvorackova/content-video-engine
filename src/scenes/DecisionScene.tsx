@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {theme} from '../compositions/GovAIHeroVideo';
+import {theme} from '../compositions/AIGovHeroVideo';
 
 export const DecisionScene: React.FC<{
   decision: {status: 'approved' | 'blocked'; title: string; reason: string};

@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
-import {theme} from '../compositions/GovAIHeroVideo';
+import {theme} from '../compositions/AIGovHeroVideo';
 
 export const EvidenceScene: React.FC<{items: string[]}> = ({items}) => {
   const frame = useCurrentFrame();

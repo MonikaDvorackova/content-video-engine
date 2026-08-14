@@ -8,7 +8,7 @@ import {EvidenceScene} from '../scenes/EvidenceScene';
 import {OutroScene} from '../scenes/OutroScene';
 import {GridBackground} from '../components/GridBackground';
 
-export type GovAIVideoProps = {
+export type AIGovVideoProps = {
   hookLines: string[];
   mobilePrompt: string;
   checks: string[];
@@ -39,7 +39,7 @@ export const theme = {
   glow: 'rgba(81, 118, 255, 0.22)',
 };
 
-export const GovAIHeroVideo: React.FC<GovAIVideoProps> = (props) => {
+export const AIGovHeroVideo: React.FC<AIGovVideoProps> = (props) => {
   return (
     <AbsoluteFill
       style={{

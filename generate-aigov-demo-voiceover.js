@@ -9,14 +9,14 @@ const client = new OpenAI({
 
 // IMPORTANT: Use this EXACT text (per repo instructions).
 const script = `
-GovAI turns AI lifecycle events into a verifiable compliance trail.
+AIGov turns AI lifecycle events into a verifiable compliance trail.
 It creates an audit-ready run record from production evidence.
 
 The proof problem is operational: can you prove what happened, when it happened, and who authorized promotion.
-GovAI answers this with a deterministic chain of evidence.
+AIGov answers this with a deterministic chain of evidence.
 
 Each incoming event is ingested as an evidence packet.
-GovAI expands the payload into explicit fields and normalizes values.
+AIGov expands the payload into explicit fields and normalizes values.
 It computes a fingerprint and hash, then commits the packet into an append-only chain.
 Run state gates update as commits complete.
 
@@ -26,17 +26,17 @@ Evaluation: commit report identifiers and key metrics as structured values.
 Approval: record approver identity and an approval reference as evidence.
 Promotion: commit the promoted artifact, target environment, and promotion reference.
 
-From the committed chain, GovAI derives compliance state from satisfied requirements.
+From the committed chain, AIGov derives compliance state from satisfied requirements.
 When all required evidence and approvals are present, the state is VALID.
 
-GovAI verifies integrity by recomputing hash links and comparing fingerprints end-to-end.
+AIGov verifies integrity by recomputing hash links and comparing fingerprints end-to-end.
 Only after verification completes does CHAIN_VALID resolve to true.
 
-GovAI provides audit-ready AI governance: structured evidence, deterministic gates, and a verifiable chain.
+AIGov provides audit-ready AI governance: structured evidence, deterministic gates, and a verifiable chain.
 `;
 
 async function main() {
-  const outputPath = path.resolve("public/audio/govai-demo-voiceover.mp3");
+  const outputPath = path.resolve("public/audio/aigov-demo-voiceover.mp3");
 
   const response = await client.audio.speech.create({
     model: "gpt-4o-mini-tts",
@@ -51,7 +51,7 @@ async function main() {
   fs.mkdirSync(path.dirname(outputPath), {recursive: true});
   fs.writeFileSync(outputPath, buffer);
 
-  console.log("GovAIDemo voiceover generated at:", outputPath);
+  console.log("AIGovDemo voiceover generated at:", outputPath);
 }
 
 main();

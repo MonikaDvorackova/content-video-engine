@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {theme} from '../compositions/GovAIHeroVideo';
+import {theme} from '../compositions/AIGovHeroVideo';
 
 export const OutroScene: React.FC<{
   outro: {headline: string; subheadline: string};
@@ -36,7 +36,7 @@ export const OutroScene: React.FC<{
             marginBottom: 28,
           }}
         >
-          GOVAI
+          AIGOV
         </div>
 
         <div

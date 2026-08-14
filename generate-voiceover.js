@@ -12,13 +12,13 @@ Most AI systems can show what is deployed.
 
 Very few can prove why it was allowed to run.
 
-GovAI generates auditable evidence for model releases, integrity checks, and compliance workflows.
+AIGov generates auditable evidence for model releases, integrity checks, and compliance workflows.
 
 Every run, every status, every hash, and every artifact stays traceable.
 
 Minimal surface. Strong guarantees.
 
-GovAI.
+AIGov.
 `;
 
 async function main() {

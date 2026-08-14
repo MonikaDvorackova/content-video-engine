@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {theme} from '../compositions/GovAIHeroVideo';
+import {theme} from '../compositions/AIGovHeroVideo';
 
 export const MobilePromptScene: React.FC<{prompt: string}> = ({prompt}) => {
   const frame = useCurrentFrame();

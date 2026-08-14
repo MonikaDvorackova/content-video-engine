@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {theme} from '../compositions/GovAIHeroVideo';
+import {theme} from '../compositions/AIGovHeroVideo';
 
 export const HookScene: React.FC<{lines: string[]}> = ({lines}) => {
   const frame = useCurrentFrame();
@@ -42,7 +42,7 @@ export const HookScene: React.FC<{lines: string[]}> = ({lines}) => {
             marginBottom: 30,
           }}
         >
-          GOVAI
+          AIGOV
         </div>
 
         <div

@@ -7,6 +7,11 @@ import type {
   VideoFormat,
   VisualLanguage,
 } from './types';
+import {
+  scoreCreativeChoice,
+  type CreativeTrendSignal,
+  type RecentCreativeUsage,
+} from './trends';
 
 const clampDuration = (seconds: number): number =>
   Math.max(20, Math.min(60, seconds));
@@ -110,42 +115,82 @@ const choosePacing = (
   return 'medium';
 };
 
+export interface CreativeDirectorContext {
+  trends?: CreativeTrendSignal[];
+  recentUsage?: RecentCreativeUsage;
+}
+
+const EMPTY_RECENT_USAGE: RecentCreativeUsage = {
+  visualLanguages: [],
+  narratives: [],
+  formats: [],
+  pacing: [],
+};
+
+const rankVisualLanguages = (
+  candidates: VisualLanguage[],
+  context: CreativeDirectorContext,
+): VisualLanguage[] => {
+  const trends = context.trends ?? [];
+  const recent = context.recentUsage ?? EMPTY_RECENT_USAGE;
+
+  return [...candidates].sort((a, b) => {
+    const scoreA = scoreCreativeChoice(
+      {kind: 'visual_language', value: a},
+      trends,
+      recent,
+    );
+    const scoreB = scoreCreativeChoice(
+      {kind: 'visual_language', value: b},
+      trends,
+      recent,
+    );
+
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA;
+    }
+
+    return candidates.indexOf(a) - candidates.indexOf(b);
+  });
+};
+
 const chooseVisualLanguages = (
   story: StorySignal,
+  context: CreativeDirectorContext,
 ): VisualLanguage[] => {
   switch (story.sourceType) {
     case 'research':
-      return ['documents', 'charts', 'kinetic_typography'];
+      return rankVisualLanguages(['documents', 'charts', 'kinetic_typography'], context);
 
     case 'benchmark':
-      return ['charts', 'diagram', 'kinetic_typography'];
+      return rankVisualLanguages(['charts', 'diagram', 'kinetic_typography'], context);
 
     case 'regulation':
-      return ['documents', 'timeline', 'diagram'];
+      return rankVisualLanguages(['documents', 'timeline', 'diagram'], context);
 
     case 'security_incident':
-      return ['terminal', 'ui_simulation', 'split_screen'];
+      return rankVisualLanguages(['terminal', 'ui_simulation', 'split_screen'], context);
 
     case 'product_release':
-      return ['browser', 'ui_simulation', 'kinetic_typography'];
+      return rankVisualLanguages(['browser', 'ui_simulation', 'kinetic_typography'], context);
 
     case 'community_discussion':
-      return ['cards', 'kinetic_typography', 'split_screen'];
+      return rankVisualLanguages(['cards', 'kinetic_typography', 'split_screen'], context);
 
     case 'historical':
-      return ['timeline', 'documents', 'cinematic'];
+      return rankVisualLanguages(['timeline', 'documents', 'cinematic'], context);
 
     case 'market_signal':
-      return ['cinematic', 'diagram', 'kinetic_typography'];
+      return rankVisualLanguages(['cinematic', 'diagram', 'kinetic_typography'], context);
 
     case 'news':
-      return ['cards', 'browser', 'kinetic_typography'];
+      return rankVisualLanguages(['cards', 'browser', 'kinetic_typography'], context);
 
     case 'original_analysis':
-      return ['mixed', 'diagram', 'cinematic'];
+      return rankVisualLanguages(['mixed', 'diagram', 'cinematic'], context);
 
     default:
-      return ['mixed'];
+      return rankVisualLanguages(['mixed'], context);
   }
 };
 
@@ -230,11 +275,15 @@ const buildScenes = (
 
 export const directStory = (
   story: StorySignal,
+  context: CreativeDirectorContext = {},
 ): CreativeStrategy => {
   const narrativeMechanic = chooseNarrative(story);
   const format = chooseFormat(story, narrativeMechanic);
   const pacing = choosePacing(story, narrativeMechanic);
-  const visualLanguages = chooseVisualLanguages(story);
+  const visualLanguages = chooseVisualLanguages(
+    story,
+    context,
+  );
 
   const baseDuration =
     story.sourceType === 'research' ||

@@ -100,3 +100,60 @@ for (const strategy of strategies) {
 console.log(
   `Creative Director PASS: ${narrativeCount} narratives, ${visualSignatureCount} visual signatures`,
 );
+
+const trendAwareSecurityStory = makeStory(
+  'security_incident',
+  {freshnessScore: 0.96},
+);
+
+const trendAware = directStory(
+  trendAwareSecurityStory,
+  {
+    trends: [
+      {
+        id: 'terminal-saturated',
+        observedAt: '2026-08-14T12:00:00Z',
+        source: 'test',
+        target: {
+          kind: 'visual_language',
+          value: 'terminal',
+        },
+        direction: 'saturated',
+        strength: 1,
+        confidence: 1,
+      },
+      {
+        id: 'split-rising',
+        observedAt: '2026-08-14T12:00:00Z',
+        source: 'test',
+        target: {
+          kind: 'visual_language',
+          value: 'split_screen',
+        },
+        direction: 'rising',
+        strength: 1,
+        confidence: 1,
+      },
+    ],
+    recentUsage: {
+      visualLanguages: [
+        'terminal',
+        'terminal',
+        'terminal',
+      ],
+      narratives: [],
+      formats: [],
+      pacing: [],
+    },
+  },
+);
+
+if (trendAware.visualLanguages[0] !== 'split_screen') {
+  throw new Error(
+    `Trend-aware director should promote split_screen over saturated terminal: ${trendAware.visualLanguages.join(',')}`,
+  );
+}
+
+console.log(
+  `Trend-aware Director PASS: ${trendAware.visualLanguages.join(' > ')}`,
+);

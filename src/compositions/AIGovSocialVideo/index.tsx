@@ -1,9 +1,11 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Audio,
   Easing,
   interpolate,
   Sequence,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
@@ -12,8 +14,12 @@ import type {
   RenderBrief,
   SceneBeat,
 } from '../../creative/types';
+import {buildAudioBrief} from '../../creative/audio';
 
 export const SOCIAL_FPS = 30;
+
+const SOCIAL_VOICEOVER_PATH =
+  'audio/aigov-social-voiceover.mp3';
 
 const TOKENS = {
   bg: '#070A10',
@@ -1035,6 +1041,61 @@ const Storyboard: React.FC<{
   }
 };
 
+const SceneCaption: React.FC<{
+  text: string;
+  sceneFrames: number;
+}> = ({text, sceneFrames}) => {
+  const frame = useCurrentFrame();
+
+  const enter = p(frame, 0, 8);
+  const exit = interpolate(
+    frame,
+    [
+      Math.max(0, sceneFrames - 10),
+      sceneFrames,
+    ],
+    [1, 0],
+    {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    },
+  );
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 90,
+        right: 90,
+        bottom: 78,
+        zIndex: 20,
+        display: 'flex',
+        justifyContent: 'center',
+        opacity: enter * exit,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 860,
+          padding: '16px 22px',
+          borderRadius: 18,
+          border: `1px solid ${TOKENS.borderStrong}`,
+          background: 'rgba(7,10,16,0.88)',
+          boxShadow: '0 14px 38px rgba(0,0,0,0.28)',
+          color: TOKENS.textPrimary,
+          fontSize: 24,
+          lineHeight: 1.32,
+          fontWeight: 650,
+          textAlign: 'center',
+        }}
+      >
+        {text}
+      </div>
+    </div>
+  );
+};
+
 const Scene: React.FC<{
   scene: SceneBeat;
   story: Story;
@@ -1218,6 +1279,7 @@ export const AIGovSocialVideo: React.FC<
   RenderBrief
 > = (brief) => {
   const {fps} = useVideoConfig();
+  const audioBrief = buildAudioBrief(brief);
 
   let cursor = 0;
 
@@ -1227,7 +1289,14 @@ export const AIGovSocialVideo: React.FC<
         background: TOKENS.bg,
       }}
     >
-      {brief.creative.scenes.map((scene) => {
+      {audioBrief.voiceover.enabled ? (
+        <Audio
+          src={staticFile(SOCIAL_VOICEOVER_PATH)}
+          volume={1}
+        />
+      ) : null}
+
+      {brief.creative.scenes.map((scene, index) => {
         const durationInFrames = Math.max(
           1,
           Math.round(
@@ -1249,6 +1318,16 @@ export const AIGovSocialVideo: React.FC<
               story={brief.story}
               sceneFrames={durationInFrames}
             />
+
+            {audioBrief.captions.enabled ? (
+              <SceneCaption
+                text={
+                  audioBrief.voiceover.segments[index]
+                    ?.text ?? ''
+                }
+                sceneFrames={durationInFrames}
+              />
+            ) : null}
           </Sequence>
         );
       })}

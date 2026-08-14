@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "story": {
+    "id": "example-agent-tool-governance",
+    "sourceType": "market_signal",
+    "title": "AI agents are moving from copilots to operators",
+    "summary": "Agent systems increasingly execute tools and actions instead of only producing recommendations.",
+    "discoveredAt": "2026-08-14T12:00:00Z",
+    "freshnessScore": 0.9,
+    "noveltyScore": 0.84,
+    "audienceInterestScore": 0.88,
+    "aigovRelevanceScore": 0.95,
+    "whyNow": "More production agents are gaining access to tools, infrastructure and business workflows.",
+    "storyAngle": "The important governance boundary is moving from model output to agent execution.",
+    "evidence": [
+      {
+        "url": "https://example.com/source",
+        "title": "Placeholder source for schema validation only",
+        "publisher": "Example",
+        "publishedAt": "2026-08-14",
+        "evidenceType": "secondary"
+      }
+    ]
+  },
+  "creative": {
+    "narrativeMechanic": "pov",
+    "format": "vertical_short",
+    "pacing": "fast",
+    "hook": "Your AI agent just got permission to deploy code.",
+    "thesis": "When agents become operators, governance has to follow execution rather than stop at model approval.",
+    "audience": "AI engineering, platform, security and governance leaders",
+    "durationSeconds": 30,
+    "aspectRatio": "9:16",
+    "visualLanguages": [
+      "terminal",
+      "ui_simulation",
+      "kinetic_typography"
+    ],
+    "aigovConnection": "Runtime policy and execution evidence become relevant when agents take real actions.",
+    "cta": "Govern execution, not just models.",
+    "scenes": [
+      {
+        "id": "hook",
+        "durationSeconds": 4,
+        "purpose": "hook",
+        "headline": "Your AI agent just got production access.",
+        "visualLanguage": "terminal"
+      },
+      {
+        "id": "escalation",
+        "durationSeconds": 7,
+        "purpose": "context",
+        "headline": "It can call tools. Modify systems. Trigger workflows.",
+        "visualLanguage": "ui_simulation"
+      },
+      {
+        "id": "question",
+        "durationSeconds": 6,
+        "purpose": "reveal",
+        "headline": "Who records why it acted?",
+        "visualLanguage": "kinetic_typography"
+      },
+      {
+        "id": "implication",
+        "durationSeconds": 8,
+        "purpose": "implication",
+        "headline": "Governance now has to follow execution.",
+        "body": "Policy, tool calls, approvals and outcomes need one trace.",
+        "visualLanguage": "diagram"
+      },
+      {
+        "id": "cta",
+        "durationSeconds": 5,
+        "purpose": "cta",
+        "headline": "Govern execution, not just models.",
+        "visualLanguage": "cinematic"
+      }
+    ]
+  },
+  "brand": {
+    "name": "AIGov",
+    "tone": "technical"
+  },
+  "publication": {
+    "channel": "linkedin",
+    "requiresHumanApproval": true
+  }
+}

@@ -80,6 +80,7 @@ const sceneVoiceoverText = (
       return joinSentences(
         'The governance boundary is moving with the technology',
         'Agent actions, tool calls, policy checks, and decisions need to remain traceable',
+        'That is the shift AIGov is built for: governance that stays attached to execution, from signal to evidence',
       );
 
     default:

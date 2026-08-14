@@ -5,7 +5,8 @@
   "scripts": {
     "remotion": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts aigov-hero-30s out/aigov-hero.mp4",
-    "compositions": "remotion compositions src/index.ts"
+    "compositions": "remotion compositions src/index.ts",
+    "generate:social": "node scripts/generate-social.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.441",

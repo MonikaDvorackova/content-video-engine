@@ -25,57 +25,72 @@ export type AudioBrief = {
   };
 };
 
+const cleanSentence = (
+  value: string | undefined,
+): string =>
+  (value ?? '')
+    .trim()
+    .replace(/[.?!]+$/g, '');
+
+const joinSentences = (
+  ...values: Array<string | undefined>
+): string =>
+  values
+    .map(cleanSentence)
+    .filter(Boolean)
+    .map((value) => `${value}.`)
+    .join(' ');
+
 const sceneVoiceoverText = (
   scene: SceneBeat,
   brief: RenderBrief,
 ): string => {
+  const title = cleanSentence(brief.story.title);
+  const summary = cleanSentence(brief.story.summary);
+  const whyNow = cleanSentence(brief.story.whyNow);
+  const angle = cleanSentence(brief.story.storyAngle);
+  const headline = cleanSentence(scene.headline);
+
   switch (scene.purpose) {
     case 'hook':
-      return [
-        scene.headline,
-        brief.story.summary,
-      ]
-        .filter(Boolean)
-        .join('. ');
+      return joinSentences(
+        'AI agents are moving beyond assistance',
+        summary,
+        'That changes what governance has to observe',
+      );
 
     case 'context':
-      return [
-        scene.headline,
-        brief.story.whyNow,
-      ]
-        .filter(Boolean)
-        .join('. ');
+      return joinSentences(
+        'The important shift is not simply better models',
+        whyNow,
+        'Once an agent can act through tools and workflows, decisions begin to happen at runtime',
+      );
 
     case 'evidence':
-      return [
-        scene.headline,
-        `The signal scores ${Math.round(
-          brief.story.aigovRelevanceScore * 100,
-        )} percent for AIGov relevance.`,
-      ]
-        .filter(Boolean)
-        .join('. ');
+      return joinSentences(
+        'That runtime creates a new evidence problem',
+        'Teams need to know what the agent saw, which action it selected, which tool it called, and what happened next',
+      );
 
     case 'implication':
-      return [
-        scene.headline,
-        brief.story.storyAngle,
-      ]
-        .filter(Boolean)
-        .join('. ');
+      return joinSentences(
+        angle || headline,
+        'Approving a model before deployment is no longer enough when autonomous actions continue after that approval',
+      );
 
     case 'aigov_connection':
-      return [
-        scene.headline,
-        'Governance has to follow runtime execution, agent actions, tool calls, and decision evidence.',
-      ]
-        .filter(Boolean)
-        .join('. ');
+      return joinSentences(
+        'The governance boundary is moving with the technology',
+        'Runtime context, agent actions, tool calls, policy checks, and decision evidence all need to remain traceable',
+      );
 
     default:
-      return scene.body
-        ? `${scene.headline ?? ''}. ${scene.body}`.trim()
-        : (scene.headline ?? '');
+      return [
+        headline || title,
+        cleanSentence(scene.body),
+      ]
+        .filter(Boolean)
+        .join('. ') + '.';
   }
 };
 

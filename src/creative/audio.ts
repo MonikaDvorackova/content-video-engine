@@ -55,33 +55,31 @@ const sceneVoiceoverText = (
     case 'hook':
       return joinSentences(
         'AI agents are moving beyond assistance',
-        summary,
-        'That changes what governance has to observe',
+        'Production systems increasingly let them act through tools and workflows',
       );
 
     case 'context':
       return joinSentences(
         'The important shift is not simply better models',
-        whyNow,
-        'Once an agent can act through tools and workflows, decisions begin to happen at runtime',
+        'Once agents can act through tools, decisions move into runtime',
       );
 
     case 'evidence':
       return joinSentences(
-        'That runtime creates a new evidence problem',
-        'Teams need to know what the agent saw, which action it selected, which tool it called, and what happened next',
+        'Runtime creates a new evidence problem',
+        'Teams need to know what the agent saw, chose, called, and what happened next',
       );
 
     case 'implication':
       return joinSentences(
         angle || headline,
-        'Approving a model before deployment is no longer enough when autonomous actions continue after that approval',
+        'Model approval alone is not enough once autonomous actions continue',
       );
 
     case 'aigov_connection':
       return joinSentences(
         'The governance boundary is moving with the technology',
-        'Runtime context, agent actions, tool calls, policy checks, and decision evidence all need to remain traceable',
+        'Agent actions, tool calls, policy checks, and decisions need to remain traceable',
       );
 
     default:

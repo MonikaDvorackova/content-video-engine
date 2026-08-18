@@ -1,6 +1,6 @@
 import React from 'react';
 import {Composition} from 'remotion';
-import {GovAIHeroVideo, type GovAIVideoProps} from './compositions/GovAIHeroVideo';
+import {AIGovHeroVideo, type AIGovVideoProps} from './compositions/GovAIHeroVideo';
 import {
   GovAIDemo,
   GOVAI_DEMO_DURATION_IN_FRAMES,
@@ -14,13 +14,13 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="govai-hero-30s"
-        component={GovAIHeroVideo}
+        id="aigov-hero-30s"
+        component={AIGovHeroVideo}
         durationInFrames={900}
         fps={30}
         width={1920}
         height={1080}
-        defaultProps={data as GovAIVideoProps}
+        defaultProps={data as AIGovVideoProps}
       />
       <Composition
         id="GovAIDemo"

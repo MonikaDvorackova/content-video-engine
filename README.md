@@ -2,7 +2,7 @@ Content Video Engine
 
 A video generation project for producing polished product and brand videos with Remotion.
 
-This repository currently contains a GovAI hero video pipeline built in React and Remotion. It is designed to support visually strong, modern motion content that can be rendered locally and iterated on as a proper engineering project rather than as an ad hoc video experiment.
+This repository currently contains an AIGov hero video pipeline built in React and Remotion. It is designed to support visually strong, modern motion content that can be rendered locally and iterated on as a proper engineering project rather than as an ad hoc video experiment.
 
 What this project does
 
@@ -13,7 +13,7 @@ structured JSON driven content
 optional audio assets
 deterministic local rendering
 
-The current implementation includes a GovAI hero video composed of multiple scenes such as hook, validation, evidence, decision logic, mobile prompt flow, and outro.
+The current implementation includes an AIGov hero video composed of multiple scenes such as hook, validation, evidence, decision logic, mobile prompt flow, and outro.
 
 Tech stack
 
@@ -59,7 +59,7 @@ Typical generated folders such as out/, dist/, build/, and dependency folders su
 
 Current status
 
-This repository contains the initial version of the video engine and the first GovAI hero video implementation. Future work may include:
+This repository contains the initial version of the video engine and the first AIGov hero video implementation. Future work may include:
 improved audio synchronization
 better scene timing and transitions
 reusable branding themes
